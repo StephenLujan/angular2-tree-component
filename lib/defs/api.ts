@@ -165,4 +165,10 @@ export interface ITreeModel {
    * Focuses on the parent of the current focused node (same as left arrow on a collapsed node)
    */
   focusDrillUp();
+
+  /**
+   * @returns      The node with a matching id
+   * @param id  must match the id property of the target ITreeNode
+   */
+  findNode(id:any): ITreeNode;
 }

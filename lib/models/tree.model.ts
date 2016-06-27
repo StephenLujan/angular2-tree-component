@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class TreeModel implements ITreeModel {
+
   roots: TreeNode[];
   options: TreeOptions = new TreeOptions();
   activeNode: TreeNode = null;
@@ -122,5 +123,29 @@ export class TreeModel implements ITreeModel {
       let nextNode = previousNode.realParent;
       nextNode && nextNode.focus();
     }
+  }
+
+  /** recursively search a TreeNode[] then each TreeNode's children array */
+  private static _find(nodes:TreeNode[], id:any) {
+    let found = nodes.find((node) => {
+      return node.id === id;
+    });
+    if (found){
+      return found;
+    } else {
+      for (let node of nodes) {
+        if (node.hasChildren) {
+          found = TreeModel._find(node.children, id);
+          if (found){
+            return found;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  findNode(id:any) {
+    return TreeModel._find(this.roots, id);
   }
 }
